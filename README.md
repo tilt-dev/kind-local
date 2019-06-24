@@ -1,6 +1,6 @@
 # kind-local
 
-This is a Proof of Concept of how to run a local container registry in Kind (Kubernetes in Docker).
+This is a Proof of Concept of how to run a local container registry in [Kind](https://github.com/kubernetes-sigs/kind) (Kubernetes in Docker).
 
 ## Why
 
@@ -69,6 +69,9 @@ Much of the code in this repo is inspired by the equivalent registry setup in Mi
 The KIND
 [private registries doc](https://github.com/kubernetes-sigs/kind/blob/master/site/content/docs/user/private-registries.md)
 had some helpful sample code in how to set up registry configuration.
+
+We're hoping that all local Kubernetes tooling will eventually support this workflow natively.
+See [this issue](https://github.com/kubernetes-sigs/kind/issues/602) in the Kind repo for more technical discussion.
 
 ## License
 
