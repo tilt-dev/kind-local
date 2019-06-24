@@ -37,6 +37,8 @@ docker tag alpine localhost:32001/alpine
 docker push localhost:32001/alpine
 ```
 
+You can now use the image name `localhost:32001/alpine` in any resources you deploy to the Kind cluster
+
 ## How it Works
 
 `kind-registry.sh` has three major jobs:
