@@ -1,79 +1,55 @@
 # kind-local
 
-This is a Proof of Concept of how to run a local container registry in [Kind](https://github.com/kubernetes-sigs/kind) (Kubernetes in Docker).
+When using Tilt with a [Kind](https://github.com/kubernetes-sigs/kind) cluster, 
+we recommend using a local registry for faster image pushing and pulling.
 
-## Why
+This repo documents the best way to set Kind up.
+
+## Why use Kind with a local registry?
 
 When developing locally, you want to push images to the cluster as fast as possible.
 
-Pushing to an in-cluster container registry skips a lot of overhead:
+Pushing to an in-cluster image registry skips a lot of overhead:
 
 - Unlike with a remote registry, the image stays local to your machine, with no network traffic
 
 - Unlike with `kind load`, docker will skip pushing any layers that already exist in the registry
 
-This makes it a great solution for iterative local development. But setting it up is awkward and fiddly.
-
-This repo demonstrates how you might build a more robust solution.
+This makes it a great solution for iterative local development. But setting it up is awkward and fiddly. This script makes it easy.
 
 ## How to Try It
 
-1) Create a cluster
+1) Install [Kind](https://github.com/kubernetes-sigs/kind)
+
+2) Copy the [kind-with-registry.sh](kind-with-registry.sh) somewhere on your path.
+
+3) Create a cluster with `kind-with-registry.sh`. Currently it creates the registry at port 5000.
 
 ```
-kind create cluster
+kind-with-registry.sh
 ```
 
-2) Start the registry. Currently it creates the registry at port 32001
+4) Try pushing an image.
 
 ```
-./kind-registry.sh
+docker tag alpine localhost:5000/alpine
+docker push localhost:5000/alpine
 ```
 
-3) Try pushing an image.
+You can now use the image name `registry:5000/alpine` in any resources you deploy to the Kind cluster.
 
-```
-docker tag alpine localhost:32001/alpine
-docker push localhost:32001/alpine
-```
-
-You can now use the image name `localhost:32001/alpine` in any resources you deploy to the Kind cluster
-
-## How it Works
-
-`kind-registry.sh` has three major jobs:
-
-1) Deploy a container registry in the cluster that's available on each node at 32001.
-
-Currently we do this with [registry.yaml](registry.yaml).
-
-This runs a single pod and exposes it with a NodePort, which means
-it only works if your Kind cluster is a single-node cluster.
-
-TODO: make this work with a multi-node cluster.
-
-2) Configure containerd to trust the registry at 32001, even though it's on http (instead of https).
-
-This is trickier. See [config.toml](config.toml), which configures this as
-`[plugins.cri.registry.mirrors."local.insecure-registry.io"]`.
-
-3) Expose the registry as 32001 on the host.
-
-We do this with `kubectl port-forward`. A more robust implementation would have
-to manage the port-forwarding.
+[Tilt](https://tilt.dev) will automatically detect the local registry created by this script,
+and do the image tagging dance (as of Tilt v0.12.0).
 
 ## Thanks to
 
-Inspired by [MicroK8s](https://github.com/ubuntu/microk8s)'s private registry feature.
+High five to [MicroK8s](https://github.com/ubuntu/microk8s) for the initial local registry feature
+that inspired a lot of this work.
 
-Much of the code in this repo is inspired by the equivalent registry setup in MicroK8s.
+The Kind team ran with this, writing up documentation and hooks for how to [set up a local registry](https://kind.sigs.k8s.io/docs/user/local-registry/) with Kind.
 
-The KIND
-[private registries doc](https://github.com/kubernetes-sigs/kind/blob/master/site/content/docs/user/private-registries.md)
-had some helpful sample code in how to set up registry configuration.
-
-We're hoping that all local Kubernetes tooling will eventually support this workflow natively.
-See [this issue](https://github.com/kubernetes-sigs/kind/issues/602) in the Kind repo for more technical discussion.
+This repo modifies the Kind team's script to annotate the nodes with information about the local registry, 
+so that Tilt can find it.
 
 ## License
 
