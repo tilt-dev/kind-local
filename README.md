@@ -1,5 +1,7 @@
 # kind-local
 
+[![Build Status](https://circleci.com/gh/windmilleng/kind-local/tree/master.svg?style=shield)](https://circleci.com/gh/windmilleng/kind-local)
+
 When using Tilt with a [Kind](https://github.com/kubernetes-sigs/kind) cluster, 
 we recommend using a local registry for faster image pushing and pulling.
 
@@ -40,6 +42,12 @@ You can now use the image name `registry:5000/alpine` in any resources you deplo
 
 [Tilt](https://tilt.dev) will automatically detect the local registry created by this script,
 and do the image tagging dance (as of Tilt v0.12.0).
+
+## How to Use it in CI
+
+We also have instructions for setting Kind up with a local registry in
+
+- [.circleci](.circleci) 
 
 ## Thanks to
 
