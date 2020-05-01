@@ -59,6 +59,8 @@ The Kind team ran with this, writing up documentation and hooks for how to [set 
 This repo modifies the Kind team's script to annotate the nodes with information about the local registry, 
 so that Tilt can find it.
 
+Tested on Kind 0.7.0 and Kind 0.8.0
+
 ## License
 
 Copyright 2019 Windmill Engineering
