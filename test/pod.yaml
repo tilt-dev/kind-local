@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
   - name: kind-test
-    image: registry:5000/busybox
+    image: localhost:5000/busybox
     command: ["sh", "-c", "busybox httpd -f -p 8000"]
     ports:
       - containerPort: 8000

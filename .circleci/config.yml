@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: tiltdev/circleci-kind:v1.0.0
+      - image: tiltdev/circleci-kind:v1.1.0
 
     steps:
       - setup_remote_docker

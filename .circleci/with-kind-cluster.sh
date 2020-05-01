@@ -31,7 +31,8 @@ KIND_CLUSTER_NAME="kind"
 reg_name='kind-registry'
 reg_port='5000'
 
-echo "> initializing Kind cluster: ${KIND_CLUSTER_NAME}"
+echo "> initializing Docker registry"
+
 # create registry container unless it already exists
 running="$(docker inspect -f '{{.State.Running}}' "${reg_name}" 2>/dev/null || true)"
 if [ "${running}" != 'true' ]; then
@@ -40,15 +41,19 @@ if [ "${running}" != 'true' ]; then
     registry:2
 fi
 
+echo "> initializing Kind cluster: ${KIND_CLUSTER_NAME} with registry ${reg_name}"
+
 # create a cluster with the local registry enabled in containerd
 cat <<EOF | kind create cluster --name "${KIND_CLUSTER_NAME}" --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 containerdConfigPatches:
 - |-
-  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."registry:${reg_port}"]
-    endpoint = ["http://registry:${reg_port}"]
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:${reg_port}"]
+    endpoint = ["http://${reg_name}:${reg_port}"]
 EOF
+
+docker network connect kind "${reg_name}"
 
 echo "> port-forwarding k8s API server"
 /usr/local/bin/start-portforward-service.sh start
@@ -61,16 +66,10 @@ echo "> port-forwarding local registry"
 /usr/local/bin/portforward.sh $reg_port
 
 echo "> annotating nodes"
-# add the registry to /etc/hosts on each node
-ip_fmt='{{.NetworkSettings.IPAddress}}'
-cmd="echo $(docker inspect -f "${ip_fmt}" "${reg_name}") registry >> /etc/hosts"
 
 # and annotate each node with registry info (for Tilt to detect)
 for node in $(kind get nodes --name "${KIND_CLUSTER_NAME}"); do
-  docker exec "${node}" sh -c "${cmd}"
-  kubectl annotate node "${node}" \
-          tilt.dev/registry=localhost:${reg_port} \
-          tilt.dev/registry-from-cluster=registry:${reg_port}
+  kubectl annotate node "${node}" tilt.dev/registry=localhost:${reg_port};
 done
 
 echo "> waiting for kubernetes node(s) become ready"
