@@ -38,7 +38,7 @@ docker tag alpine localhost:5000/alpine
 docker push localhost:5000/alpine
 ```
 
-You can now use the image name `registry:5000/alpine` in any resources you deploy to the Kind cluster.
+You can now use the image name `localhost:5000/alpine` in any resources you deploy to the Kind cluster.
 
 [Tilt](https://tilt.dev) will automatically detect the local registry created by this script,
 and do the image tagging dance (as of Tilt v0.12.0).
