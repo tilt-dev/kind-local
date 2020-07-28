@@ -56,8 +56,8 @@ that inspired a lot of this work.
 
 The Kind team ran with this, writing up documentation and hooks for how to [set up a local registry](https://kind.sigs.k8s.io/docs/user/local-registry/) with Kind.
 
-This repo modifies the Kind team's script to annotate the nodes with information about the local registry, 
-so that Tilt can find it.
+This repo modifies the Kind team's script to apply the local registry configmap, so that tools
+like Tilt can discover the local-registry. This protocol is a [Kubernetes Enhancement Proposal](https://github.com/kubernetes/enhancements/issues/1755).
 
 Tested on Kind 0.7.0 and Kind 0.8.0
 
