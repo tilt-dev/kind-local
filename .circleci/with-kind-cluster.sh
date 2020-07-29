@@ -65,12 +65,19 @@ kubectl get nodes # make sure it worked
 echo "> port-forwarding local registry"
 /usr/local/bin/portforward.sh $reg_port
 
-echo "> annotating nodes"
+echo "> applying local-registry docs"
 
-# and annotate each node with registry info (for Tilt to detect)
-for node in $(kind get nodes --name "${KIND_CLUSTER_NAME}"); do
-  kubectl annotate node "${node}" tilt.dev/registry=localhost:${reg_port};
-done
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-registry-hosting
+  namespace: kube-public
+data:
+  localRegistryHosting.v1: |
+    host: "localhost:${reg_port}"
+    help: "https://kind.sigs.k8s.io/docs/user/local-registry/"
+EOF
 
 echo "> waiting for kubernetes node(s) become ready"
 kubectl wait --for=condition=ready node --all --timeout=60s
