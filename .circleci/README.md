@@ -24,7 +24,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: tiltdev/circleci-kind:v1.2.0
+      - image: tiltdev/circleci-kind:v1.3.0
 
     steps:
       - setup_remote_docker
@@ -42,9 +42,9 @@ FROM tiltdev/circleci-kind:v1.2.0
 Or copy out the helper scripts:
 
 ```
-COPY --from=tiltdev/circleci-kind:v1.2.0 /usr/local/bin/start-portforward-service.sh /usr/local/bin/
-COPY --from=tiltdev/circleci-kind:v1.2.0 /usr/local/bin/portforward.sh /usr/local/bin/
-COPY --from=tiltdev/circleci-kind:v1.2.0 /usr/local/bin/with-kind-cluster.sh /usr/local/bin/
+COPY --from=tiltdev/circleci-kind:v1.3.0 /usr/local/bin/start-portforward-service.sh /usr/local/bin/
+COPY --from=tiltdev/circleci-kind:v1.3.0 /usr/local/bin/portforward.sh /usr/local/bin/
+COPY --from=tiltdev/circleci-kind:v1.3.0 /usr/local/bin/with-kind-cluster.sh /usr/local/bin/
 ```
 
 See [Dockerfile](Dockerfile) for instructions on how to add these tools to
