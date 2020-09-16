@@ -1,6 +1,6 @@
 # kind-local
 
-[![Build Status](https://circleci.com/gh/windmilleng/kind-local/tree/master.svg?style=shield)](https://circleci.com/gh/windmilleng/kind-local)
+[![Build Status](https://circleci.com/gh/tilt-dev/kind-local/tree/master.svg?style=shield)](https://circleci.com/gh/tilt-dev/kind-local)
 
 When using Tilt with a [Kind](https://github.com/kubernetes-sigs/kind) cluster, 
 we recommend using a local registry for faster image pushing and pulling.
