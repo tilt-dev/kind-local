@@ -31,4 +31,4 @@ set -o errtrace
 docker run -d -it \
     --name portforward --net=host \
     --entrypoint /bin/sh \
-    bobrik/socat -c "while true; do sleep 1000; done"
+    alpine/socat -c "while true; do sleep 1000; done"
