@@ -7,6 +7,12 @@ we recommend using a local registry for faster image pushing and pulling.
 
 This repo documents the best way to set Kind up.
 
+## UPDATE
+
+For a more comprehensive tool for messing around with local clusters and registries, check out [ctlptl](http://github.com/tilt-dev/ctlptl).
+
+`ctlptl` uses many of the techniques in this shell script.
+
 ## Why use Kind with a local registry?
 
 When developing locally, you want to push images to the cluster as fast as possible.
