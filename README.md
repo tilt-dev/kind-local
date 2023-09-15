@@ -1,17 +1,22 @@
 # kind-local
 
-[![Build Status](https://circleci.com/gh/tilt-dev/kind-local/tree/master.svg?style=shield)](https://circleci.com/gh/tilt-dev/kind-local)
-
 When using Tilt with a [Kind](https://github.com/kubernetes-sigs/kind) cluster, 
 we recommend using a local registry for faster image pushing and pulling.
 
 This repo documents the best way to set Kind up.
 
-## UPDATE
+## UPDATE(2023-09-15)
 
-For a more comprehensive tool for messing around with local clusters and registries, check out [ctlptl](http://github.com/tilt-dev/ctlptl).
+The Kind project maintains an official script for setting up a local registry. The official script
+is kept up to date with the latest containerd settings.
 
-`ctlptl` uses many of the techniques in this shell script.
+https://kind.sigs.k8s.io/docs/user/local-registry/
+
+For a more comprehensive tool for setting up local clusters and registries, check out [ctlptl](http://github.com/tilt-dev/ctlptl).
+
+`ctlptl` uses many of the techniques in the official shell script, but with more features and better error-reporting.
+
+Therefore, this repo is obsolete, but will be archived for posterity.
 
 ## Why use Kind with a local registry?
 
